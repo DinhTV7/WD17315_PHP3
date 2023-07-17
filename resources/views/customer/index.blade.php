@@ -39,9 +39,10 @@
             <td>{{ $customer->email }}</td>
             <td>{{ $customer->phone_number }}</td>
             <td>{{ $customer->date_of_birth }}</td>
-            <td>{{ $customer->gender == 1 ? "Nam" : "Nữ" }}</td>
+            <td>{{ $customer->gender == 0 ? "Nam" : "Nữ" }}</td>
             <td>
-                <a href="{{ route('edit_customer', [ 'id' => $customer->id ]) }}">Edit</a>
+                <a class="btn btn-warning" href="{{ route('edit_customer', [ 'id' => $customer->id ]) }}">Edit</a>
+                <a class="btn btn-danger" href="{{ route('delete_customer', [ 'id' => $customer->id ]) }}">Delete</a>
             </td>
         </tr>
         @endforeach

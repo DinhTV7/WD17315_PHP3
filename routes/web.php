@@ -35,3 +35,5 @@ Route::match(['get', 'post'], '/customers/add', [CustomerController::class, 'add
 
 // Sửa thông tin khách hàng
 Route::match(['get', 'post'], '/customers/edit/{id}', [CustomerController::class, 'edit_customer'])->name('edit_customer');
+
+Route::get('/customers/delete/{id}', [CustomerController::class, 'delete_customer'])->name('delete_customer');

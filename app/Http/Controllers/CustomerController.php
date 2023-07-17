@@ -89,7 +89,8 @@ class CustomerController extends Controller
         // return view('customer.index', 
         // compact('title', 'id', 'name', 'address', 'email', 'phone_number', 'date_of_birth', 'gender'));
         
-        $customers = DB::table('customer')->get();
+        // $customers = DB::table('customer')->get();
+        $customers = Customer::all();
 
         // Khi ấn vào nút search
         if ($request->post() && $request->search_name) {
@@ -141,12 +142,36 @@ class CustomerController extends Controller
         return view('customer.add', compact('title'));
     }
 
-    public function edit_customer ($id) {
+    public function edit_customer (CustomerRequest $request,$id) {
         $title = "Edit Customer";
 
         // Tìm kiếm thông tin chi tiết của 1 bản ghi theo id
-        $detail = Customer::find($id); 
+        $detail = Customer::find($id);
+        if ($request->isMethod('post')) {
+            $update = Customer::where('id', $id)
+            ->update($request->except('_token'));
+            // except giống unset
+            if ($update) {
+                Session::flash('success', 'Sửa thông tin khách hàng thành công');
+                return redirect()->route('search_customer');
+            } else {
+                Session::flash('error', 'Lỗi thêm khách hàng');
+            }
+        }
 
         return view('customer.edit', compact('title', 'detail'));
+    }
+
+    public function delete_customer($id) {
+        if ($id) {
+            $deleted = Customer::where('id', $id)->delete();
+            if ($deleted) {
+                Session::flash('success', 'Xóa thông tin khách hàng thành công');
+                return redirect()->route('search_customer');
+            } else {
+                Session::flash('error', 'Lỗi xóa khách hàng');
+            }
+        }
+        return;
     }
 }

@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('address')->nullable(); // nullable ko cần có giá trị đầu vào
             $table->tinyInteger('gender')->default(0); // default xét giá trị mặc định
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
