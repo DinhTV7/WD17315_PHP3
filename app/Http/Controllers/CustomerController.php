@@ -116,6 +116,9 @@ class CustomerController extends Controller
 
             // Cách thêm 1:
             // DB::table('customer')->insert($params);
+            if ($request->hasFile('image') && $request->file('image')->isValid()) {
+                $request->image = uploadFile('hinh', $request->file('image'));
+            }
 
             // Cách 2: Thêm dữ liệu qua model
             $customer = new Customer();
@@ -125,6 +128,7 @@ class CustomerController extends Controller
             $customer->phone_number = $request->phone_number;
             $customer->date_of_birth = $request->date_of_birth;
             $customer->gender = $request->gender;
+            $customer->image = $request->image;
 
             // Thực công việc lưu dữ liệu
             $customer->save();

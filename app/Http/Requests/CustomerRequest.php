@@ -34,8 +34,8 @@ class CustomerRequest extends FormRequest
                         $rules = [
                             'name' => 'required',
                             'address' => 'max:255',
-                            'email' => 'required|unique:customer',
-                            'phone_number' => 'required|unique:customer|max:10',
+                            'email' => 'required',
+                            'phone_number' => 'required|max:10',
                             'date_of_birth' => 'required'
                         ];
                         break;
