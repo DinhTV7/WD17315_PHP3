@@ -4,14 +4,13 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CustomerRequest extends FormRequest
+class UserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        // Chuyển thành true
         return true;
     }
 
@@ -23,23 +22,25 @@ class CustomerRequest extends FormRequest
     public function rules(): array
     {
         $rules = [];
-
-        // Lấy phương thức đang hoạt động
+        // Lấy phương thức hoạt động
         $currentAction = $this->route()->getActionMethod();
 
         switch ($this->method()) {
             case 'POST':
                 switch ($currentAction) {
-                    case 'add_customer': // Tên phương thức đang hoạt động
+                    case 'login': // Tên phương thức đang hoạt động
                         $rules = [
-                            'name' => 'required',
-                            'address' => 'max:255',
                             'email' => 'required',
-                            'phone_number' => 'required|max:10',
-                            'date_of_birth' => 'required'
+                            'password' => 'required',
                         ];
                         break;
-                    
+                    case 'register': // Tên phương thức đang hoạt động
+                        $rules = [
+                            'name' => 'required',
+                            'email' => 'required|unique:users',
+                            'password' => 'required',
+                        ];
+                        break;
                     default:
                         break;
                 }
@@ -54,9 +55,9 @@ class CustomerRequest extends FormRequest
     {
         return [
             'name.required' => 'Bắt buộc phải điền tên',
-            'address.max' => 'Địa chỉ nhập quá dài',
-            'email.required' => 'Bắt buộc phải điền tên',
-            'email.unique' => 'Email của bạn đã được sử dụng',
+            'email.required' => 'Bắt buộc phải điền email',
+            'email.unique' => 'Email đã tòn tại',
+            'password.required' => 'Bắt buộc phải điền mật khẩu',
         ];
     }
 }

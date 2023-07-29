@@ -6,7 +6,7 @@
         <p>{{ $error }}</p>
     @endforeach
     @endif
-    <form action="{{ route('edit_customer', ['id' => $detail->id]) }}" method="POST">
+    <form action="{{ route('edit_customer', ['id' => $detail->id]) }}" method="POST" enctype="multipart/form-data">
         @csrf
         <input type="text" placeholder="Name" name="name" value="{{ $detail->name }}"><br>
         <input type="text" placeholder="Address" name="address" value="{{ $detail->address }}"><br>
@@ -17,6 +17,12 @@
         <label for="">Nam</label>
         <input type="radio" name="gender" value="1" {{ $detail->gender == 1 ? 'checked' : '' }}>
         <label for="">Nữ</label><br>
-        <button type="submit">Add new</button>
+        <img id="image_preview" 
+        src="{{ $detail->image ? '' . Storage::url($detail->image) : 'https://png.pngtree.com/element_our/png/20181206/users-vector-icon-png_260862.jpg'}}" 
+        alt="Customer image" style="max-width: 200px; max-height: 100px">
+        <input type="file" name="image" accept="image/*" 
+        class="@error('image') is-invalid @enderror" id="image">
+        <br>
+        <button type="submit">Edit</button>
     </form>
 @endsection

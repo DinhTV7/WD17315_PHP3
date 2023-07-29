@@ -7,6 +7,7 @@ use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 
 class CustomerController extends Controller
 {
@@ -152,9 +153,21 @@ class CustomerController extends Controller
         // Tìm kiếm thông tin chi tiết của 1 bản ghi theo id
         $detail = Customer::find($id);
         if ($request->isMethod('post')) {
-            $update = Customer::where('id', $id)
-            ->update($request->except('_token'));
             // except giống unset
+            $params = $request->except('_token', 'image');
+            // dd($request->file('image'));
+            // Update ảnh
+            if ($request->hasFile('image') && $request->file('image')->isValid()) {
+                // Xóa ảnh cũ nếu update ảnh mới
+                $deleteImage = Storage::delete('/public/'.$detail->image);
+                $params['image'] = uploadFile('hinh', $request->file('image'));
+            } else {
+                $params['image'] = $detail->image;
+            }
+
+            $update = Customer::where('id', $id)
+            ->update($params);
+
             if ($update) {
                 Session::flash('success', 'Sửa thông tin khách hàng thành công');
                 return redirect()->route('search_customer');

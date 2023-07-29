@@ -42,7 +42,7 @@
             <td>{{ $customer->date_of_birth }}</td>
             <td>{{ $customer->gender == 0 ? "Nam" : "Nữ" }}</td>
             <td>
-                <img src="{{ $customer->image ? '' . Storage::url($customer->image) : 'https://png.pngtree.com/element_our/png/20181206/users-vector-icon-png_260862.jpg' }}" alt="">
+                <img src="{{ $customer->image ? '' . Storage::url($customer->image) : 'https://png.pngtree.com/element_our/png/20181206/users-vector-icon-png_260862.jpg' }}" alt="" width="100px">
             </td>
             <td>
                 <a class="btn btn-warning" href="{{ route('edit_customer', [ 'id' => $customer->id ]) }}">Edit</a>
