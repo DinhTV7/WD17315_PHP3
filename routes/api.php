@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ApiCustomerController;
+use App\Http\Controllers\ApiLoginController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,19 +20,26 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::prefix('customers')->group( function () {
-    // Lấy ra danh sách khách hàng
-    Route::get('/', [ApiCustomerController::class, 'index']);
+Route::post('login', [ApiLoginController::class, 'login']);
 
-    // Lấy thông tin chi tiết
-    Route::get('/{id}', [ApiCustomerController::class, 'show']);
+Route::group(['middleware' => 'auth:api'], function () {
 
-    // Thêm thông tin khách hàng
-    Route::post('/', [ApiCustomerController::class, 'store']);
+    Route::delete('logout', [ApiLoginController::class, 'logout']);
 
-    // Cập nhật thông tin khách hàng
-    Route::put('/{id}', [ApiCustomerController::class, 'update']);
-
-    // Xóa thông tin khách hàng
-    Route::delete('/{id}', [ApiCustomerController::class, 'destroy']);
+    Route::prefix('customers')->group( function () {
+        // Lấy ra danh sách khách hàng
+        Route::get('/', [ApiCustomerController::class, 'index']);
+    
+        // Lấy thông tin chi tiết
+        Route::get('/{id}', [ApiCustomerController::class, 'show']);
+    
+        // Thêm thông tin khách hàng
+        Route::post('/', [ApiCustomerController::class, 'store']);
+    
+        // Cập nhật thông tin khách hàng
+        Route::put('/{id}', [ApiCustomerController::class, 'update']);
+    
+        // Xóa thông tin khách hàng
+        Route::delete('/{id}', [ApiCustomerController::class, 'destroy']);
+    });
 });
